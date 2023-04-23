@@ -3,11 +3,20 @@ const fs = require('fs');
 
 https
   .createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    const html = fs.readFileSync(__dirname + '/index.htm');
-    res.end(html);
+    if (req.url === '/') {
+      fs.createReadStream(__dirname + 'index.htm').pipe(res);
+    }
 
-    // mapping the port- ip address standard local system- local host
+    if (req.url === '/api') {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      var obj = {
+        firstname: 'Kermit',
+        lastname: 'The Frog',
+      };
+      res.end(JSON.stringify(obj));
+
+      // mapping the port- ip address standard local system- local host
+    }
   })
   .listen(1337, '127.0.0.1');
 
